@@ -11,6 +11,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Uri = Android.Net.Uri;
 
 namespace POI
 {
@@ -57,6 +58,31 @@ namespace POI
                 _progressDialog = ProgressDialog.Show(this, "", "Obtaining location...");
                 _locationManager.RequestSingleUpdate(new Criteria{Accuracy = Accuracy.NoRequirement, PowerRequirement = Power.NoRequirement}, this, null);
             };
+
+	        _mapImageButton.Click += (s, e) =>
+	        {
+	            // uri options:
+	            // geo:latitude,longitude
+	            // geo:latitude,longitude?z={zoom} where {zoom} is the zoom level
+	            // geo:0,0?q=my+street+address
+	            // geo:0,0?q=business+near+city
+	            var geocodeUri = Uri.Parse(String.IsNullOrEmpty(_addrEditText.Text)
+	                ? String.Format("geo:{0},{1}", _poi.Latitude, _poi.Longitude)
+	                : String.Format("geo:0,0?q={0}", _addrEditText.Text));
+
+	            var mapIntent = new Intent(Intent.ActionView, geocodeUri);
+	            var activities = PackageManager.QueryIntentActivities(mapIntent, 0);
+	            if (activities.Any())
+	                StartActivity(mapIntent);
+	            else
+	            {
+	                var alertConfirm = new AlertDialog.Builder(this);
+	                alertConfirm.SetCancelable(false);
+	                alertConfirm.SetPositiveButton("OK", delegate { });
+	                alertConfirm.SetMessage("No map app available.");
+	                alertConfirm.Show();
+	            }
+	        };
 		    
 			UpdateUI ();
 		}
