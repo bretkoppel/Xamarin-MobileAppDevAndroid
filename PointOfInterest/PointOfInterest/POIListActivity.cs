@@ -10,7 +10,12 @@ using Android.OS;
 
 namespace POI
 {
-	[Activity (Label = "PointOfInterest", MainLauncher = true, Icon = "@drawable/icon")]
+    // setting ConfigurationChanges this way will prevent the activity from being destroyed when orientation
+    // and screen size change. otherwise, we would lose all of our calculated location info every time we
+    // re-oriented the screen because the activity would be destroyed and recreated. also, any async
+    // calls made would throw an exception because the activity they're calling back to would have been
+    // destroyed, so location calls would end up throwing exceptions.
+	[Activity (Label = "PointOfInterest", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = (Android.Content.PM.ConfigChanges.Orientation) | (Android.Content.PM.ConfigChanges.ScreenSize))]
 	public class POIListActivity : Activity, ILocationListener
 	{
 		private ListView _poiListView;

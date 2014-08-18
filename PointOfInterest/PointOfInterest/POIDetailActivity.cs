@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -14,7 +15,7 @@ using Android.Widget;
 namespace POI
 {
 	[Activity (Label = "POIDetailActivity")]			
-	public class POIDetailActivity : Activity
+	public class POIDetailActivity : Activity, ILocationListener
 	{
 		private EditText _nameEditText;
 		private EditText _descrEditText;
@@ -23,19 +24,26 @@ namespace POI
 		private EditText _longEditText;
 		private ImageView _poiImageView;
 		private PointOfInterest _poi;
+	    private LocationManager _locationManager;
+	    private ImageButton _locationImageButton;
+	    private ImageButton _mapImageButton;
+	    private ProgressDialog _progressDialog;
 
-		protected override void OnCreate (Bundle bundle)
+	    protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
 			// Create your application here
 			SetContentView (Resource.Layout.POIDetail);
+            _locationManager = GetSystemService(Context.LocationService) as LocationManager;
 			_nameEditText = FindViewById<EditText> (Resource.Id.nameEditText);
 			_descrEditText = FindViewById<EditText> (Resource.Id.descrEditText);
 			_addrEditText = FindViewById<EditText> (Resource.Id.addrEditText);
 			_latEditText = FindViewById<EditText> (Resource.Id.latEditText);
 			_longEditText = FindViewById<EditText> (Resource.Id.longEditText);
 			_poiImageView = FindViewById<ImageView> (Resource.Id.poiImageView);
+	        _locationImageButton = FindViewById<ImageButton>(Resource.Id.locationImageButton);
+	        _mapImageButton = FindViewById<ImageButton>(Resource.Id.mapImageButton);
 
 			if (Intent.HasExtra ("poiId")) {
 				int poiId = Intent.GetIntExtra ("poiId", -1); 
@@ -44,6 +52,12 @@ namespace POI
 			else
 				_poi = new PointOfInterest ();
 
+            _locationImageButton.Click += (s, e) =>
+            {
+                _progressDialog = ProgressDialog.Show(this, "", "Obtaining location...");
+                _locationManager.RequestSingleUpdate(new Criteria{Accuracy = Accuracy.NoRequirement, PowerRequirement = Power.NoRequirement}, this, null);
+            };
+		    
 			UpdateUI ();
 		}
 
@@ -151,6 +165,52 @@ namespace POI
 		    dialog.SetMessage(string.Format("Are you sure you want to delete {0}?", _poi.Name));
 		    dialog.Show();
 		}
+
+	    public void OnLocationChanged(Location location)
+	    {
+            _latEditText.Text = location.Latitude.ToString();
+            _longEditText.Text = location.Longitude.ToString();
+
+            var geocdr = new Geocoder(this);
+            var addresses = geocdr.GetFromLocation(location.Latitude, location.Longitude, 5);
+
+            if (addresses.Any())
+                UpdateAddressFields(addresses.First());
+
+            _progressDialog.Cancel();
+	    }
+
+	    public void OnProviderDisabled(string provider)
+	    {
+	        
+	    }
+
+	    public void OnProviderEnabled(string provider)
+	    {
+	        
+	    }
+
+	    public void OnStatusChanged(string provider, Availability status, Bundle extras)
+	    {
+	        
+	    }
+
+	    protected void UpdateAddressFields(Address addr)
+	    {
+	        if (string.IsNullOrEmpty(_nameEditText.Text))
+	            _nameEditText.Text = addr.FeatureName;
+
+            if (string.IsNullOrEmpty(_addrEditText.Text))
+	        {
+	            for (int i = 0; i < addr.MaxAddressLineIndex; i++)
+	            {
+	                if (!String.IsNullOrEmpty(_addrEditText.Text))
+                        _addrEditText.Text += System.Environment.NewLine;
+
+	                _addrEditText.Text += addr.GetAddressLine(i);
+	            }
+	        }
+	    }
 	}
 }
 
