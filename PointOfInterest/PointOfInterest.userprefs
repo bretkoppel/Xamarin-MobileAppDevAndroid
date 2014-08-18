@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.AVD_for_Nexus_S_by_Google" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="PointOfInterest\POIDetailActivity.cs">
+    <Files>
+      <File FileName="PointOfInterest\POIListActivity.cs" Line="14" Column="14" />
+      <File FileName="PointOfInterest\PointOfInterest.cs" Line="1" Column="1" />
+      <File FileName="PointOfInterest\IPointOfInterestService.cs" Line="1" Column="1" />
+      <File FileName="PointOfInterestTests\PointOfInterestTestFixture.cs" Line="1" Column="1" />
+      <File FileName="PointOfInterest\POIListViewAdapter.cs" Line="1" Column="1" />
+      <File FileName="PointOfInterest\Resources\menu\POIListViewMenu.xml" Line="35" Column="35" />
+      <File FileName="PointOfInterest\Resources\Resource.designer.cs" Line="1" Column="1" />
+      <File FileName="PointOfInterest\POIDetailActivity.cs" Line="54" Column="54" />
+      <File FileName="PointOfInterest\Resources\menu\POIDetailMenu.xml" Line="25" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.PointOfInterest MonoForAntroid.PreferredDevice="4&quot; WVGA (Nexus S)" />
+</Properties>

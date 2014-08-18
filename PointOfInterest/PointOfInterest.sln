@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfInterest", "PointOfInterest\PointOfInterest.csproj", "{7248015D-3DFB-485D-8960-D0C9DF3854FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfInterestTests", "PointOfInterestTests\PointOfInterestTests.csproj", "{445364B9-4CB2-4996-8706-EA6CE62874BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7248015D-3DFB-485D-8960-D0C9DF3854FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7248015D-3DFB-485D-8960-D0C9DF3854FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7248015D-3DFB-485D-8960-D0C9DF3854FE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7248015D-3DFB-485D-8960-D0C9DF3854FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7248015D-3DFB-485D-8960-D0C9DF3854FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7248015D-3DFB-485D-8960-D0C9DF3854FE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{445364B9-4CB2-4996-8706-EA6CE62874BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{445364B9-4CB2-4996-8706-EA6CE62874BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{445364B9-4CB2-4996-8706-EA6CE62874BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{445364B9-4CB2-4996-8706-EA6CE62874BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = PointOfInterest\PointOfInterest.csproj
+	EndGlobalSection
+EndGlobal
