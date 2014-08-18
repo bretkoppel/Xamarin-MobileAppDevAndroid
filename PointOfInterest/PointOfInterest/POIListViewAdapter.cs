@@ -2,6 +2,7 @@ using System;
 
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -24,7 +25,9 @@ namespace POI
 			get { return POIData.Service.POIs.Count; }
 		}
 
-		public override long GetItemId (int position)
+	    public Location CurrentLocation { get; set; }
+
+	    public override long GetItemId (int position)
 		{
 			return POIData.Service.POIs [position].Id.Value;
 		}
@@ -49,6 +52,17 @@ namespace POI
 				addressView.Visibility = ViewStates.Gone;
 			else
 				addressView.Text = poi.Address;
+
+            if ((CurrentLocation != null) && (poi.Latitude.HasValue) && (poi.Longitude.HasValue))
+            {
+                var poiLocation = new Location("") {Latitude = poi.Latitude.Value, Longitude = poi.Longitude.Value};
+                var distance = CurrentLocation.DistanceTo(poiLocation) * 0.000621371F; // Meters -> Miles
+                view.FindViewById<TextView>(Resource.Id.distanceTextView).Text = String.Format("{0:0,0.00} miles", distance);
+            }
+            else
+            {
+                view.FindViewById<TextView>(Resource.Id.distanceTextView).Text = "??";
+            }
 
 			return view;
 		}
