@@ -2,10 +2,12 @@ using System;
 using System.IO;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Path = System.IO.Path;
 
 namespace POI
 {
@@ -19,6 +21,16 @@ namespace POI
 		public static readonly IPointOfInterestService Service = new PointOfInterestService(
 			Path.Combine(
 				Android.OS.Environment.ExternalStorageDirectory.Path,
-				"POIApp")); 
+				"POIApp"));
+
+        public static Bitmap GetImageFile(int poiId)
+        {
+            var filename = Service.GetImageFilename(poiId);
+            if (!File.Exists(filename))
+                return null;
+
+            var imageFile = new Java.IO.File(filename);
+            return BitmapFactory.DecodeFile(imageFile.Path);
+        }
 	}
 }

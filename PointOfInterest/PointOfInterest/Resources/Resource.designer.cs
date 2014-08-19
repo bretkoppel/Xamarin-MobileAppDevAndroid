@@ -84,17 +84,17 @@ namespace POI
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060019
-			public const int actionDelete = 2131099673;
-			
 			// aapt resource value: 0x7f06001a
-			public const int actionNew = 2131099674;
+			public const int actionDelete = 2131099674;
 			
 			// aapt resource value: 0x7f06001b
-			public const int actionRefresh = 2131099675;
+			public const int actionNew = 2131099675;
 			
-			// aapt resource value: 0x7f060018
-			public const int actionSave = 2131099672;
+			// aapt resource value: 0x7f06001c
+			public const int actionRefresh = 2131099676;
+			
+			// aapt resource value: 0x7f060019
+			public const int actionSave = 2131099673;
 			
 			// aapt resource value: 0x7f060007
 			public const int addrEditText = 2131099655;
@@ -102,8 +102,8 @@ namespace POI
 			// aapt resource value: 0x7f060006
 			public const int addrEditTextLabel = 2131099654;
 			
-			// aapt resource value: 0x7f060016
-			public const int addrTextView = 2131099670;
+			// aapt resource value: 0x7f060017
+			public const int addrTextView = 2131099671;
 			
 			// aapt resource value: 0x7f060005
 			public const int descrEditText = 2131099653;
@@ -111,8 +111,8 @@ namespace POI
 			// aapt resource value: 0x7f060004
 			public const int descrEditTextLabel = 2131099652;
 			
-			// aapt resource value: 0x7f060017
-			public const int distanceTextView = 2131099671;
+			// aapt resource value: 0x7f060018
+			public const int distanceTextView = 2131099672;
 			
 			// aapt resource value: 0x7f06000d
 			public const int latEditText = 2131099661;
@@ -123,11 +123,11 @@ namespace POI
 			// aapt resource value: 0x7f060001
 			public const int linearLayout1 = 2131099649;
 			
-			// aapt resource value: 0x7f06000f
-			public const int linearLayout2 = 2131099663;
-			
 			// aapt resource value: 0x7f060010
-			public const int locationImageButton = 2131099664;
+			public const int linearLayout2 = 2131099664;
+			
+			// aapt resource value: 0x7f060012
+			public const int locationImageButton = 2131099666;
 			
 			// aapt resource value: 0x7f06000e
 			public const int longEditText = 2131099662;
@@ -135,8 +135,8 @@ namespace POI
 			// aapt resource value: 0x7f06000b
 			public const int longEditTextLabel = 2131099659;
 			
-			// aapt resource value: 0x7f060011
-			public const int mapImageButton = 2131099665;
+			// aapt resource value: 0x7f060013
+			public const int mapImageButton = 2131099667;
 			
 			// aapt resource value: 0x7f060003
 			public const int nameEditText = 2131099651;
@@ -144,17 +144,20 @@ namespace POI
 			// aapt resource value: 0x7f060002
 			public const int nameEditTextLabel = 2131099650;
 			
-			// aapt resource value: 0x7f060015
-			public const int nameTextView = 2131099669;
+			// aapt resource value: 0x7f060016
+			public const int nameTextView = 2131099670;
+			
+			// aapt resource value: 0x7f060011
+			public const int photoImageButton = 2131099665;
+			
+			// aapt resource value: 0x7f06000f
+			public const int poiImageView = 2131099663;
 			
 			// aapt resource value: 0x7f060014
-			public const int poiImageView = 2131099668;
+			public const int poiListView = 2131099668;
 			
-			// aapt resource value: 0x7f060012
-			public const int poiListView = 2131099666;
-			
-			// aapt resource value: 0x7f060013
-			public const int relativeLayout1 = 2131099667;
+			// aapt resource value: 0x7f060015
+			public const int relativeLayout1 = 2131099669;
 			
 			// aapt resource value: 0x7f060000
 			public const int scrollView1 = 2131099648;

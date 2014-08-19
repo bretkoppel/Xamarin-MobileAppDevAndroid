@@ -19,6 +19,7 @@ namespace POI
 		PointOfInterest GetPOI (int id);
 		void SavePOI(PointOfInterest pointOfInterest);
 		void DeletePOI(PointOfInterest pointOfInterest);
+        string GetImageFilename(int id);
 	}
 
 	public class PointOfInterestService : IPointOfInterestService
@@ -74,16 +75,31 @@ namespace POI
 				_pois.Add (poi);
 		}
 
-		public void DeletePOI (PointOfInterest poi)
-		{
-			File.Delete (GetFilename (poi.Id.Value));
-			_pois.Remove (poi);
-		}
+	    public void DeletePOI(PointOfInterest poi)
+	    {
+	        if (poi.Id.HasValue)
+	        {
+	            // delete POI JSON file
+	            if (File.Exists(GetFilename(poi.Id.Value)))
+	                File.Delete(GetFilename(poi.Id.Value));
 
-		public IReadOnlyList<PointOfInterest> POIs
+	            // delete POI image file
+	            if (File.Exists(GetImageFilename(poi.Id.Value)))
+	                File.Delete(GetImageFilename(poi.Id.Value));
+	        }
+
+	        _pois.Remove(poi);
+	    }
+
+	    public IReadOnlyList<PointOfInterest> POIs
 		{
 			get { return _pois; }
 		}
+
+        public string GetImageFilename(int id)
+	    {
+            return Path.Combine(_storagePath, "poiimage" + id + ".jpg");
+	    }
 
 		private int GetNextId()
 		{
@@ -95,7 +111,7 @@ namespace POI
 
 		private string GetFilename(int id)
 		{
-			return Path.Combine(_storagePath,"poi" + id.ToString() + ".json");
+			return Path.Combine(_storagePath,"poi" + id + ".json");
 		}
 	}
 }

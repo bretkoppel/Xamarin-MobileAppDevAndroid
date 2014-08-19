@@ -9,11 +9,16 @@
     <ImageView
         p1:src="@android:drawable/ic_menu_gallery"
         p1:layout_width="wrap_content"
-        p1:layout_height="wrap_content"
+        p1:layout_height="match_parent"
         p1:id="@+id/poiImageView"
         p1:minWidth="65dp"
         p1:minHeight="65dp"
-        p1:layout_centerVertical="true" />
+        p1:layout_centerVertical="true"
+        p1:maxHeight="65dp"
+        p1:maxWidth="65dp"
+        p1:scaleType="centerInside"
+        p1:adjustViewBounds="true"
+        p1:padding="5dp" />
     <LinearLayout
         p1:orientation="vertical"
         p1:minWidth="25px"

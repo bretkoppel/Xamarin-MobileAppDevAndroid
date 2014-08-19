@@ -2,6 +2,7 @@ using System;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Locations;
 using Android.Runtime;
 using Android.Views;
@@ -41,11 +42,9 @@ namespace POI
 		{
 			// when a view is available for reuse, convertView will contain a reference to the view; otherwise, it will be null and a new view should be created. 
 			// otherwise we'd need to create a new view for every single row, which would be expensive. better to reuse the rows as old ones scroll out of view.
-			View view = convertView;
-			if (view == null)
-				view = _context.LayoutInflater.Inflate(Resource.Layout.POIListItem, null);
+			var view = convertView ?? _context.LayoutInflater.Inflate(Resource.Layout.POIListItem, null);
 
-			var poi = this [position];
+		    var poi = this [position];
 			view.FindViewById<TextView> (Resource.Id.nameTextView).Text = poi.Name;
 			var addressView = view.FindViewById<TextView> (Resource.Id.addrTextView);
 			if (string.IsNullOrEmpty (poi.Address))
@@ -60,9 +59,10 @@ namespace POI
                 view.FindViewById<TextView>(Resource.Id.distanceTextView).Text = String.Format("{0:0,0.00} miles", distance);
             }
             else
-            {
                 view.FindViewById<TextView>(Resource.Id.distanceTextView).Text = "??";
-            }
+
+		    using (var poiImage = POIData.GetImageFile(poi.Id.Value))
+		        view.FindViewById<ImageView>(Resource.Id.poiImageView).SetImageBitmap(poiImage);
 
 			return view;
 		}

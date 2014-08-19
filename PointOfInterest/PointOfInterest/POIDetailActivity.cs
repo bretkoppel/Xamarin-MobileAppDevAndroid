@@ -6,8 +6,11 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
 using Android.Locations;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -18,6 +21,8 @@ namespace POI
 	[Activity (Label = "POIDetailActivity")]			
 	public class POIDetailActivity : Activity, ILocationListener
 	{
+        const int CAPTURE_PHOTO = 0;
+
 		private EditText _nameEditText;
 		private EditText _descrEditText;
 		private EditText _addrEditText;
@@ -29,6 +34,7 @@ namespace POI
 	    private ImageButton _locationImageButton;
 	    private ImageButton _mapImageButton;
 	    private ProgressDialog _progressDialog;
+	    private ImageButton _photoImageButton;
 
 	    protected override void OnCreate (Bundle bundle)
 		{
@@ -45,10 +51,16 @@ namespace POI
 			_poiImageView = FindViewById<ImageView> (Resource.Id.poiImageView);
 	        _locationImageButton = FindViewById<ImageButton>(Resource.Id.locationImageButton);
 	        _mapImageButton = FindViewById<ImageButton>(Resource.Id.mapImageButton);
+	        _photoImageButton = FindViewById<ImageButton>(Resource.Id.photoImageButton);
 
 			if (Intent.HasExtra ("poiId")) {
 				int poiId = Intent.GetIntExtra ("poiId", -1); 
 				_poi = POIData.Service.GetPOI (poiId);
+			    using (var poiImage = POIData.GetImageFile(_poi.Id.Value))
+			    {
+			        if (poiImage != null)
+			            _poiImageView.SetImageBitmap(poiImage);
+			    }
 			}
 			else
 				_poi = new PointOfInterest ();
@@ -83,8 +95,48 @@ namespace POI
 	                alertConfirm.Show();
 	            }
 	        };
+
+	        _photoImageButton.Click += (s, e) =>
+	        {
+	            if (!_poi.Id.HasValue)
+	            {
+	                var alertConfirm = new AlertDialog.Builder(this);
+	                alertConfirm.SetCancelable(false);
+	                alertConfirm.SetPositiveButton("OK", delegate { });
+	                alertConfirm.SetMessage("You must save the POI prior to attaching a photo");
+	                alertConfirm.Show();
+	                return;
+	            }
+
+	            // MediaStore.ActionImageCapture -> Use any existing photo app
+	            var cameraIntent = new Intent(MediaStore.ActionImageCapture);
+	            PackageManager packageManager = PackageManager;
+	            var activities = packageManager.QueryIntentActivities(cameraIntent, 0);
+	            if (activities.Any())
+	            {
+	                // tell the external app where to store the image
+	                // we need to map our physical path to a java URI path, so...
+	                var imageFile = new Java.IO.File(POIData.Service.GetImageFilename(_poi.Id.Value));
+	                var imageUri = Uri.FromFile(imageFile);
+	                cameraIntent.PutExtra(MediaStore.ExtraOutput, imageUri);
+
+	                // limit the image size
+	                cameraIntent.PutExtra(MediaStore.ExtraSizeLimit, 1.5*1024);
+
+	                // the second parameter identifies the reason for calling the intent
+	                StartActivityForResult(cameraIntent, CAPTURE_PHOTO);
+	            }
+	            else
+	            {
+	                var alertConfirm = new AlertDialog.Builder(this);
+	                alertConfirm.SetCancelable(false);
+	                alertConfirm.SetPositiveButton("OK", delegate { });
+	                alertConfirm.SetMessage("No photo capture app is installed.");
+	                alertConfirm.Show();
+	            }
+	        };
 		    
-			UpdateUI ();
+			UpdateUI();
 		}
 
 		protected void UpdateUI()
@@ -133,7 +185,34 @@ namespace POI
 			}
 		}
 
-		protected void SavePOI()
+	    protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+	    {
+	        if (requestCode != CAPTURE_PHOTO)
+	            base.OnActivityResult(requestCode, resultCode, data);
+	        else
+	        {
+	            if (resultCode == Result.Ok)
+	            {
+	                using (var poiImage = POIData.GetImageFile(_poi.Id.Value))
+	                {
+	                    if (poiImage != null)
+                            _poiImageView.SetImageBitmap(poiImage);
+	                    else
+	                    {
+                            var toast = Toast.MakeText(this, "No picture captured.", ToastLength.Short);
+                            toast.Show();
+	                    }
+	                }
+	            }
+	            else
+	            {
+                    var toast = Toast.MakeText(this, "Failed to capture picture.", ToastLength.Short);
+                    toast.Show();
+	            }
+	        }
+	    }
+
+	    protected void SavePOI()
 		{
 			bool errors = false;
 
